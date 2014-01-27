@@ -4,6 +4,13 @@
 
 #include "fasta.h"
 
+void toUpper(char *str){
+   while(*str){
+      if(*str >= 'a' && *str <= 'z') *str -= ('a' - 'A');
+      str++;
+   }
+}
+
 /**
   readFasta Read multifasta sequence file
 */
@@ -44,6 +51,7 @@ MultiFasta *readFasta(const char *filename){
       }
       else{
         /* Seq */
+        toUpper(line);
         mf->fasta[counter-1].seq = realloc(mf->fasta[counter-1].seq, seqlen + readlen);
         strncpy(&mf->fasta[counter-1].seq[seqlen], line, readlen);
         mf->fasta[counter-1].seq[seqlen + readlen - 1] = '\0';

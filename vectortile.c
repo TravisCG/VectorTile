@@ -3,12 +3,17 @@
 #include <math.h>
 
 #include "fasta.h"
+#include "parameters.h"
+#include "multialign.h"
 
 int main(int argc, char **argv){
   MultiFasta *fasta;
+  Parameters  param;
 
-  fasta = readFasta(argv[1]);
-  printFasta(fasta);
+  param = readParams(argc, argv);
+
+  fasta = readFasta(param.fastaname);
+  multialign(fasta, param.kmersize);
   releaseFasta(fasta);
 
   return EXIT_SUCCESS;
