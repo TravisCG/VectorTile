@@ -10,3 +10,4 @@ typedef struct _MultiFasta {
 
 MultiFasta *readFasta(const char *filename);
 void releaseFasta(MultiFasta *mf);
+void printFasta(MultiFasta *mf);
