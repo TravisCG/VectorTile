@@ -132,8 +132,7 @@ void multialign(MultiFasta *mf, int kmersize){
 
    for(i = 0; i < mf->num - 1; i++){
       for(j = i+1; j < mf->num; j++){
-         //printf("*******\n%s VS. %s\n*******\n", mf->fasta[i].header, mf->fasta[j].header);
-         diagonal(mf->fasta[i].seq, mf->fasta[j].seq, kmersize, mf->fasta[i].header, mf->fasta[i].header);
+         diagonal(mf->fasta[i].seq, mf->fasta[j].seq, kmersize, mf->fasta[i].header, mf->fasta[j].header);
       }
    }
 }
