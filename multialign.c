@@ -7,6 +7,7 @@
 #include "fasta.h"
 
 /*FIXME right now this is the most time consuming routine */
+/* I use this numbers because GPU can not compare strings */
 unsigned long calcHash(const char *seq, unsigned int start, int size){
    int i;
    char code;
@@ -79,7 +80,7 @@ void dotplot(char *matrix, const char *seq1, size_t len1, const char *seq2, size
          }
 
          d = matrix[(i - 1) * len2 + (j - 1)];
-         matrix[i * len2 + j] = k * (k + d); /* diagonal increased by one or set zero */
+         matrix[i * len2 + j] = k * (k + d); /* diagonal increased by one or set to zero */
       }
    }
 
@@ -88,21 +89,20 @@ void dotplot(char *matrix, const char *seq1, size_t len1, const char *seq2, size
 /**
   Locate and get the size of diagonals
 */
-void finddiag(const char *matrix, size_t len1, size_t len2, int ks){
+void finddiag(const char *matrix, size_t len1, size_t len2, int ks, char *id1, char *id2){
    unsigned int i, j;
 
    for(i = 0; i < len1 - ks - 1; i++){
       for(j = 0; j < len2 - ks - 1; j++){
          if( matrix[i * len2 + j] > matrix[(i+1) * len2 + j + 1]){
             /* End of a diagonal */
-            printf("%d ", matrix[i * len2 + j]);
+            printf("%d\t%d\t%d\t%s\t%s\n", matrix[i * len2 + j], i, j, id1, id2);
          }
       }
    }
-   printf("\n");
 }
 
-void diagonal(const char *seq1, const char *seq2, int kmersize){
+void diagonal(const char *seq1, const char *seq2, int kmersize, char *id1, char *id2){
    char *matrix;
    size_t len1, len2;
 
@@ -120,7 +120,7 @@ void diagonal(const char *seq1, const char *seq2, int kmersize){
    dotplot(matrix, seq1, len1, seq2, len2, kmersize);
 
    /* Find long diagonals */
-   finddiag(matrix, len1, len2, kmersize);
+   finddiag(matrix, len1, len2, kmersize, id1, id2);
 
    free(matrix);
 }
@@ -128,10 +128,12 @@ void diagonal(const char *seq1, const char *seq2, int kmersize){
 void multialign(MultiFasta *mf, int kmersize){
    unsigned int i,j;
 
+   printf("diaglen\tdiagposA\tdiagposB\tidA\tidB\n");
+
    for(i = 0; i < mf->num - 1; i++){
       for(j = i+1; j < mf->num; j++){
-         printf("*******\n%s VS. %s\n*******\n", mf->fasta[i].header, mf->fasta[j].header);
-         diagonal(mf->fasta[i].seq, mf->fasta[j].seq, kmersize);
+         //printf("*******\n%s VS. %s\n*******\n", mf->fasta[i].header, mf->fasta[j].header);
+         diagonal(mf->fasta[i].seq, mf->fasta[j].seq, kmersize, mf->fasta[i].header, mf->fasta[i].header);
       }
    }
 }
