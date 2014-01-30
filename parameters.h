@@ -3,6 +3,7 @@
 typedef struct _Parameters{
    char fastaname[MAXSTR];
    int  kmersize;
+   int mindiagsize;
    char output[MAXSTR];
 } Parameters;
 

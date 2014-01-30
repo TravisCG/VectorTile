@@ -12,6 +12,7 @@ Parameters readParams(int argc, char **argv){
 
    /* Default parameters*/
    p.kmersize = 4;
+   p.mindiagsize = 10;
 
    /* Parse command line parameters */
    for(i = 1; i < argc; i++){
@@ -21,6 +22,9 @@ Parameters readParams(int argc, char **argv){
       if(!strcmp(argv[i], "-fasta")){
          fastaisset = 1;
          strncpy(p.fastaname, argv[i+1], MAXSTR);
+      }
+      if(!strcmp(argv[i], "-mindsize")){
+         p.mindiagsize = atoi(argv[i+1]);
       }
    }
 

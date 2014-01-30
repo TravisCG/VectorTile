@@ -13,7 +13,8 @@ int main(int argc, char **argv){
   param = readParams(argc, argv);
 
   fasta = readFasta(param.fastaname);
-  multialign(fasta, param.kmersize);
+  multialign(fasta, param.kmersize, param.mindiagsize);
+  printFasta(fasta);
   releaseFasta(fasta);
 
   return EXIT_SUCCESS;
